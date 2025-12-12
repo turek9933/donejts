@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Donejts</title>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <style>
+        /* Ukrywamy alert domyślnie */
+        #alert-box {
+            display: none;
+            font-family: 'Arial', sans-serif;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            text-align: center;
+            width: 400px;
+            font-size: 24px;
+        }
+        .amount { color: #00ff00; font-weight: bold; font-size: 40px; }
+    </style>
+</head>
+<body>
+
+    <div id="alert-box">
+        <div id="user-name"></div>
+        <div class="amount" id="donation-amount"></div>
+        <div id="donation-message"></div>
+    </div>
+
+    <script>
+        // Konfiguracja Pushera (kliencka)
+        const pusher = new Pusher('TWOJE_KEY', {
+            cluster: 'TWOJE_CLUSTER'
+        });
+
+        const channel = pusher.subscribe('my-channel');
+        
+        channel.bind('my-event', function(data) {
+            // 1. Wypełnij dane
+            const box = document.getElementById('alert-box');
+            document.getElementById('user-name').innerText = data.user + " wpłacił:";
+            document.getElementById('donation-amount').innerText = data.amount;
+            document.getElementById('donation-message').innerText = data.message;
+
+            // 2. Pokaż alert
+            box.style.display = 'block';
+
+            // 3. Text-to-Speech (Syntezator mowy)
+            const msg = new SpeechSynthesisUtterance(data.message);
+            msg.lang = 'pl-PL';
+            window.speechSynthesis.speak(msg);
+
+            // 4. Ukryj po 5 sekundach
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
