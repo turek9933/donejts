@@ -14,18 +14,28 @@ const pusher = new Pusher(PUSHER_KEY, {
 
 // Tworzenie obiektu Syntezy mowy i odtworzenie tekstu z argumentu
 const synth = window.speechSynthesis;
+let activeUtterance = null;
 function speakText(text) {
     if (!synth) {
         console.error("Speech synthesis is not supported in this browser.");
         return;
     }
+
+    synth.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
     
     utterance.lang = VOICE_LANGUAGE;
     utterance.rate = VOICE_SPEED;
+
     utterance.onerror = (e) => {
         console.error("Speech synthesis error: " + e.error);
+        activeUtterance = null;
     };
+    utterance.onend = () => {
+        activeUtterance = null;
+    };
+    activeUtterance = utterance;
     if (synth !== undefined && utterance !== undefined) {
         synth.speak(utterance);
     }
