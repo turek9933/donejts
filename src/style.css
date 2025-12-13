@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: transparent;
+}
+#alert-box {
+  display: none;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 16px;
+  border-radius: 10px;
+  border: 2px solid #00ff00;
+  text-align: center;
+  width: 400px;
+  font-size: 26px;
+  position: absolute; 
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.amount { color: #00ff00; font-weight: bold; font-size: 40px; }
