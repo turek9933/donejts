@@ -4,6 +4,8 @@ const PUSHER_KEY = import.meta.env.VITE_PUSHER_KEY;
 const PUSHER_CLUSTER = import.meta.env.VITE_PUSHER_CLUSTER;
 const MY_CHANNEL = 'my-channel';
 const MY_EVENT = 'my-event';
+const VOICE_LANGUAGE = 'pl-PL';
+const VOICE_SPEED = 1.1;
 
 
 const pusher = new Pusher(PUSHER_KEY, {
@@ -11,12 +13,16 @@ const pusher = new Pusher(PUSHER_KEY, {
 });
 
 // Tworzenie obiektu Syntezy mowy i odtworzenie tekstu z argumentu
+const synth = window.speechSynthesis;
 function speakText(text) {
-    const synth = window.speechSynthesis;
+    if (!synth) {
+        console.error("Speech synthesis is not supported in this browser.");
+        return;
+    }
     const utterance = new SpeechSynthesisUtterance(text);
     
-    utterance.lang = "pl-PL";
-    utterance.rate = 1.1;
+    utterance.lang = VOICE_LANGUAGE;
+    utterance.rate = VOICE_SPEED;
     utterance.onerror = (e) => {
         console.error("Speech synthesis error: " + e.error);
     };
