@@ -67,7 +67,7 @@ channel.bind(MY_EVENT, function(data) {
         // Ukryj po 5 sekundach
         setTimeout(() => {
             box.style.display = 'none';
-        }, 5000);
+        }, 15000);
     } else {
         console.error("Błąd: Nie znaleziono elementów alertu w DOM.");
     }
